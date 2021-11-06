@@ -1,0 +1,5 @@
+tushare
+pandas
+arrow
+pyqlib
+baostock
