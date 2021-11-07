@@ -18,6 +18,7 @@ With AutoQuant, users can easily try ideas to create better Quant investment str
   - [Installation](#installation)
   - [Data Preparation](#data-preparation)
 - [Advanced Topics](#advanced-topics)
+  - [Market](#market)
   - [Data Provider](#data-provider)
 
 
@@ -35,12 +36,31 @@ pip install --upgrade autoquant
 ## Data Preparation 
 
 ```python
+from autoquant.collector import Collector
+from autoquant import Market
+from datetime import date
+
 collector = Collector.default()
-data = collector.daily_prices(market=Market.SZ, code='002594', start=date(2021, 11, 1), end=date(2021, 11, 5))
+data = collector.daily_prices(
+    market=Market.SZ, 
+    code='002594', 
+    start=date(2021, 11, 1), 
+    end=date(2021, 11, 5)
+)
     
 ```
 
 # Advanced Topics
+
+## Market
+AutoQuant support Shanghai, Shenzhen, HongKong and US markets now.
+Use Market Enum in codes:
+
+```
+from autoquant import Market
+
+Market.SZ
+```
 
 ## Data Provider
 
