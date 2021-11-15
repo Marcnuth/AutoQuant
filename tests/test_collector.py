@@ -1,5 +1,4 @@
 from autoquant.collector import Collector
-from autoquant.provider.tushare import TushareProvider
 from autoquant import Market
 from datetime import date
 

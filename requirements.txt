@@ -3,3 +3,8 @@ pandas
 arrow
 pyqlib
 baostock
+pandas-datareader
+scipy
+tigeropen
+qlib
+scikit-learn

@@ -19,6 +19,7 @@ With AutoQuant, users can easily try ideas to create better Quant investment str
   - [Data Preparation](#data-preparation)
 - [Advanced Topics](#advanced-topics)
   - [Market](#market)
+  - [Metrics](#metrics)
   - [Data Provider](#data-provider)
 
 
@@ -61,6 +62,11 @@ from autoquant import Market
 
 Market.SZ
 ```
+
+## Metrics
+
+- Gross Rate Of Return
+- CAGR(Compound Annual Growth Rate) 
 
 ## Data Provider
 

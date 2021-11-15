@@ -39,9 +39,9 @@ class TushareProvider(DataMixin, Provider):
             end_date=arrow.get(end).format('YYYYMMDD')
         )
 
-        return pd.DataFrame({
+        df = pd.DataFrame({
             'code': data['ts_code'],
-            'date': data['trade_date'],
+            'datetime': data['trade_date'].astype('datetime64[ns]'),
             'open': data['open'],
             'close': data['close'],
             'high': data['high'],
@@ -49,3 +49,5 @@ class TushareProvider(DataMixin, Provider):
             'volume': data['vol'],
             'turnover': data['amount']
         })
+        df.index = df['datetime']
+        return df

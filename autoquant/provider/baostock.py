@@ -1,7 +1,7 @@
 import baostock as bs
 import arrow
 import pandas as pd
-from datetime import date
+from datetime import date, datetime
 
 from . import Provider
 from autoquant.mixin.data import DataMixin
@@ -36,16 +36,18 @@ class BaostockProvider(DataMixin, Provider):
                 frequency="d"
             ).get_data()
 
-            return pd.DataFrame({
+            df = pd.DataFrame({
                 'code': data['code'],
-                'date': data['date'],
-                'open': data['open'],
-                'close': data['close'],
-                'high': data['high'],
-                'low': data['low'],
-                'volume': data['volume'],
-                'turnover': data['amount']
+                'datetime': data['date'].astype('datetime64[ns]'),
+                'open': data['open'].astype(float),
+                'close': data['close'].astype(float),
+                'high': data['high'].astype(float),
+                'low': data['low'].astype(float),
+                'volume': data['volume'].astype(float),
+                'turnover': data['amount'].astype(float)
             })
+            df.index = df['datetime']
+            return df
 
         finally:
             bs.logout()
