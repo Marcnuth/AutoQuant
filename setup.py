@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="AutoQuant",
-    version="0.2.0",
+    version="0.3.0",
     author="NAUTIDEA",
     author_email="xian@nautidea.com",
     description="Auto Quant",
