@@ -6,7 +6,7 @@ from datetime import date
 
 
 def test_baostock():
-    collector = Collector().with_data_provider(BaostockProvider())
+    collector = Collector().with_price_provider(BaostockProvider())
 
     data = collector.daily_prices(market=Market.SZ, code='002594', start=date(2021, 11, 1), end=date(2021, 11, 5))
     assert data.shape[0] == 5
@@ -18,7 +18,7 @@ def test_baostock():
 
 def test_tushare():
 
-    collector = Collector().with_data_provider(TushareProvider(token='db07d243e5e7f246e4e53b94f79d88ad3c99aea7a700769dc0b1738b'))
+    collector = Collector().with_price_provider(TushareProvider(token='db07d243e5e7f246e4e53b94f79d88ad3c99aea7a700769dc0b1738b'))
 
     data = collector.daily_prices(market=Market.SZ, code='002594', start=date(2021, 11, 1), end=date(2021, 11, 5))
     assert data.shape[0] == 5

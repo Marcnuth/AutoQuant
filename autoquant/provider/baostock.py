@@ -4,11 +4,11 @@ import pandas as pd
 from datetime import date, datetime
 
 from . import Provider
-from autoquant.mixin.data import DataMixin
+from autoquant.mixin.data import PriceMixin
 from autoquant import Market
 
 
-class BaostockProvider(DataMixin, Provider):
+class BaostockProvider(PriceMixin, Provider):
 
     def __init__(self) -> None:
         pass

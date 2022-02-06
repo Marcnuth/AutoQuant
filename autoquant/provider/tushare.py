@@ -4,11 +4,11 @@ from datetime import date
 import arrow
 
 from . import Provider
-from autoquant.mixin.data import DataMixin
+from autoquant.mixin.data import PriceMixin
 from autoquant import Market
 
 
-class TushareProvider(DataMixin, Provider):
+class TushareProvider(PriceMixin, Provider):
 
     def __init__(self, token) -> None:
         self.token = token

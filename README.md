@@ -20,7 +20,12 @@ With AutoQuant, users can easily try ideas to create better Quant investment str
 - [Advanced Topics](#advanced-topics)
   - [Market](#market)
   - [Metrics](#metrics)
-  - [Data Provider](#data-provider)
+  - [Price Provider](#price-provider)
+  - [Financial Statement Provider](#financial-statement-provider)
+- [Contribution Guide](#contribution-guide)
+  - [Test](#test)
+    - [Test all](#test-all)
+    - [Test specified test](#test-specified-test)
 
 
 
@@ -61,6 +66,9 @@ Use Market Enum in codes:
 from autoquant import Market
 
 Market.SZ
+Market.SH
+Market.HK
+Market.US
 ```
 
 ## Metrics
@@ -68,8 +76,27 @@ Market.SZ
 - Gross Rate Of Return
 - CAGR(Compound Annual Growth Rate) 
 
-## Data Provider
+## Price Provider
 
 - BaostockProvider
 - TushareProvider
+
+
+## Financial Statement Provider
+
+- SnowballProvider
+
+
+# Contribution Guide
+
+## Test
+### Test all
+```
+PYTHONPATH=./ pytest
+```
+
+### Test specified test
+```
+PYTHONPATH=./ pytest tests/<YOUR_DISIRE_FILE>.py -k "<YOUR_DISIRE_TEST_CASE>" -s
+```
 
