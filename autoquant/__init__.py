@@ -7,3 +7,9 @@ class Market(Enum):
     SZ = auto()
     HK = auto()
     US = auto()
+
+
+class PriceAdjustment(Enum):
+    SPLIT = auto()  # 前复权
+    REVERSE_SPLIT = auto()  # 后复权
+    NONE = auto()

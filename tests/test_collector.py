@@ -1,5 +1,4 @@
 from autoquant.collector import Collector
-from autoquant.provider.snowball import SnowballProvider
 from autoquant import Market
 from datetime import date
 
@@ -20,4 +19,18 @@ def test_collect_quarter_statement():
     collector = Collector.default()
 
     data = collector.quarter_statement(market=Market.SH, code='601318', quarter=date(2021, 9, 30))
+    assert data.shape[1] == 4
+    assert data['eps'][0] - 4.63 <= 1e-10
+    assert data['avg_roe'][0] - 10.5 <= 1e-10
+
+    data = collector.yearly_balance_sheet(market=Market.SZ, code='000002', years=[2019])
+    assert data.shape[1] == 8
+    assert data['total_liabilities'][0] - 1.459350e+12 <= 1e6
+    assert data['total_shareholders_equity'][0] - 2.705791e+11 <= 1e5
+
+
+def test_collect_yearly_income_sheets():
+    collector = Collector.default()
+
+    data = collector.yearly_income_sheets(market=Market.SZ, code='000002', years=[2011, 2020, 2009])
     print(data)

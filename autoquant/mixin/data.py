@@ -19,3 +19,11 @@ class StatementMixin:
     @abstractmethod
     def quarter_statement(self, market: Market, code: str, quarter: date, **kwargs):
         pass
+
+    @abstractmethod
+    def yearly_balance_sheet(self, market: Market, code: str,  years: list, **kwargs):
+        pass
+
+    @abstractmethod
+    def yearly_income_sheets(self, market: Market, code: str, years: list, **kwargs):
+        pass

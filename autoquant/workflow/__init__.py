@@ -43,8 +43,8 @@ class Workflow:
         self._cerebro_results = self._cerebro.run()
         return self
 
-    def visualize(self):
-        self._cerebro.plot()
+    def visualize(self, **kwargs):
+        self._cerebro.plot(**kwargs)
         return self
 
     def summary(self):

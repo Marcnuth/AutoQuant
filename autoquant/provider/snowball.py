@@ -1,3 +1,4 @@
+from pytest import mark
 import requests
 import arrow
 import pandas as pd
@@ -22,8 +23,18 @@ class SnowballProvider(StatementMixin, Provider):
             Market.US: f'{code}'
         }[market]
 
-    def quarter_statement(self, market: Market, code: str, quarter: date, **kwargs):
-        formatted_code = self.__format_code(market, code)
+    @classmethod
+    def __url_region(cls, market: Market):
+        return {
+            Market.SH: 'cn',
+            Market.SZ: 'cn',
+            Market.US: 'us',
+            Market.HK: 'hk'
+        }[market]
+
+    @classmethod
+    def __get(cls, market: Market, code: str, url: str, params: dict):
+        formatted_code = cls.__format_code(market, code)
 
         ua = 'Mozilla/5.0 (iPad; CPU OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5355d Safari/8536.25'
 
@@ -32,15 +43,8 @@ class SnowballProvider(StatementMixin, Provider):
         cookie = session.cookies.get_dict()
         token = cookie['xq_a_token']
 
-        region = {
-            Market.SH: 'cn',
-            Market.SZ: 'cn',
-            Market.US: 'us',
-            Market.HK: 'hk'
-        }[market]
-
-        dt = int(datetime(quarter.year, ((quarter.month - 1) // 3 + 1) * 3, 30, 0, 0, 0, 1000).timestamp() * 1000)
-        data = session.get(f'https://stock.xueqiu.com/v5/stock/finance/{region}/indicator.json?symbol={formatted_code}&type=all&is_detail=true&count=5&timestamp={dt}', headers={
+        _url = f'{url}?{"&".join([f"{k}={str(v)}" for k,v in params.items()])}'
+        data = session.get(_url, headers={
             'Host': 'stock.xueqiu.com',
             'Accept': 'application/json',
             'Cookie': f'xq_a_token={token}',
@@ -50,15 +54,69 @@ class SnowballProvider(StatementMixin, Provider):
             'Connection': 'keep-alive'
         })
 
-        reports = data.json()['data']['list']
-        for r in reports:
-            dt = arrow.get(r['report_date'])
-            if dt.year == quarter.year and dt.month == quarter.month:
-                return pd.DataFrame({
-                    'revenue': r['total_revenue'][0],
-                    'net_profit': r['net_profit_atsopc'][0],
-                    'eps': r['basic_eps'][0],
-                    'avg_roe': r['avg_roe'][0]
-                }, index=[arrow.get(r['report_date']).format('YYYYMM')])
-        else:
-            raise Exception(f'failed to find specified quarter statement in {list(map(lambda x: x["report_date"], reports))}')
+        return data
+
+    def quarter_statement(self, market: Market, code: str, quarter: date, **kwargs):
+        formatted_code = self.__format_code(market, code)
+        region = self.__url_region(market)
+        dt = int(datetime(quarter.year, ((quarter.month - 1) // 3 + 1) * 3, 30, 0, 0, 0, 1000).timestamp() * 1000)
+
+        data = self.__get(market, code, f'https://stock.xueqiu.com/v5/stock/finance/{region}/indicator.json', {
+            'symbol': formatted_code, 'type': 'all', 'is_detail': 'true', 'count': '1', 'timestamp': dt
+        })
+
+        report = data.json()['data']['list'][0]
+        return pd.DataFrame({
+            'revenue': report['total_revenue'][0],
+            'net_profit': report['net_profit_atsopc'][0],
+            'eps': report['basic_eps'][0],
+            'avg_roe': report['avg_roe'][0]
+        }, index=[arrow.get(report['report_date']).format('YYYYMM')])
+
+    def yearly_balance_sheet(self, market: Market, code: str, years: list, **kwargs):
+        def __yearly_balance_sheet(year):
+            dt = int(datetime(year, 12, 31, 0, 0, 0, 1000).timestamp() * 1000)
+            data = self.__get(market, code, f'https://stock.xueqiu.com/v5/stock/finance/{region}/balance.json', {
+                'symbol': formatted_code, 'type': 'Q4', 'is_detail': 'true', 'count': '1', 'timestamp': dt
+            })
+
+            report = data.json()['data']['list'][0]
+            return pd.DataFrame({
+                'total_current_assets': report['total_current_assets'][0],
+                'total_noncurrent_assets': report['total_noncurrent_assets'][0],
+                'total_assets': report['total_assets'][0],
+                'total_current_liabilities': report['total_current_liab'][0],
+                'total_noncurrent_liabilities': report['total_noncurrent_liab'][0],
+                'total_liabilities': report['total_liab'][0],
+                'total_shareholders_equity': report['total_holders_equity'][0],
+                'total_atsopc_equity': report['total_quity_atsopc'][0],
+            }, index=[arrow.get(report['report_date']).format('YYYY')])
+
+        formatted_code = self.__format_code(market, code)
+        region = self.__url_region(market)
+        dfs = [__yearly_balance_sheet(y) for y in years]
+        return pd.concat(dfs)
+
+    def yearly_income_sheets(self, market: Market, code: str, years: list, **kwargs):
+        def __yearly_income_sheet(year):
+            dt = int(datetime(year, 12, 31, 0, 0, 0, 1000).timestamp() * 1000)
+            data = self.__get(market, code, f'https://stock.xueqiu.com/v5/stock/finance/{region}/income.json', {
+                'symbol': formatted_code, 'type': 'Q4', 'is_detail': 'true', 'count': '5', 'timestamp': dt
+            })
+
+            report = data.json()['data']['list'][0]
+            return pd.DataFrame({
+                'total_revenue': report['total_revenue'][0],
+                'total_operating_costs': report['operating_costs'][0],
+                'operating_profit': report['op'][0],
+                'total_profit': report['profit_total_amt'][0],
+                'net_profit': report['net_profit'][0],
+                'net_profit_atsopc': report['net_profit_atsopc'][0],
+                'other_comprehensive_income': report['othr_compre_income'][0],
+                'total_comprehensive_income': report['total_compre_income'][0],
+            }, index=[arrow.get(report['report_date']).format('YYYY')])
+
+        formatted_code = self.__format_code(market, code)
+        region = self.__url_region(market)
+        dfs = [__yearly_income_sheet(y) for y in years]
+        return pd.concat(dfs)

@@ -33,20 +33,24 @@ class _Collector(ABC):
 
 class Collector(PriceMixin, StatementMixin, _Collector):
 
-    def daily_prices(self, market: Market, code: str, start: date, end: date, **kwargs):
-        for provider in self.price_providers:
+    @classmethod
+    def __iter_providers(cls, providers: list, func_name: str, **kwargs):
+        for provider in providers:
             try:
-                return provider.daily_prices(market, code, start, end, **kwargs)
+                return getattr(provider, func_name)(**kwargs)
             except:
-                logger.debug(f'failed to fetch daily prices from provider<{provider}>', exc_info=True)
+                logger.debug(f'failed to fetch {func_name}from provider<{provider}>', exc_info=True)
         else:
-            raise Exception('no valid data provider exsits for fetching daily prices')
+            raise Exception(f'no valid provider exsits for fetching {func_name}')
+
+    def daily_prices(self, market: Market, code: str, start: date, end: date, **kwargs):
+        return self.__iter_providers(self.price_providers, self.daily_prices.__name__, market=market, code=code, start=start, end=end, **kwargs)
 
     def quarter_statement(self, market: Market, code: str, quarter: date, **kwargs):
-        for provider in self.statement_providers:
-            try:
-                return provider.quarter_statement(market, code, quarter, **kwargs)
-            except:
-                logger.debug(f'failed to fetch quarter statement from provider<{provider}>', exc_info=True)
-        else:
-            raise Exception('no valid data provider exsits for fetching quarter statement')
+        return self.__iter_providers(self.statement_providers, self.quarter_statement.__name__, market=market, code=code, quarter=quarter, **kwargs)
+
+    def yearly_balance_sheet(self, market: Market, code: str,  years: list, **kwargs):
+        return self.__iter_providers(self.statement_providers, self.yearly_balance_sheet.__name__, market=market, code=code, years=years, **kwargs)
+
+    def yearly_income_sheets(self, market: Market, code: str, years: list, **kwargs):
+        return self.__iter_providers(self.statement_providers, self.yearly_income_sheets.__name__, market=market, code=code, years=years, **kwargs)
