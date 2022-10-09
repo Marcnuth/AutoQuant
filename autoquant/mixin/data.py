@@ -1,7 +1,7 @@
 from datetime import MAXYEAR, date
 from abc import abstractmethod
 
-from autoquant import Market
+from autoquant import Market, StocksIndex
 
 
 class PriceMixin:
@@ -26,4 +26,10 @@ class StatementMixin:
 
     @abstractmethod
     def yearly_income_sheets(self, market: Market, code: str, years: list, **kwargs):
+        pass
+
+
+class IndexMixin:
+    @abstractmethod
+    def stocks_of_index(self, index: StocksIndex, **kwargs):
         pass

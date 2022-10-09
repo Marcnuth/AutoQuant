@@ -1,3 +1,5 @@
+# import all metrics from talib
+from talib import *
 from datetime import date
 import numpy as np
 import pandas as pd

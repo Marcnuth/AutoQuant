@@ -1,4 +1,5 @@
 from collections import defaultdict
+from multiprocessing import Value
 from pickle import NONE
 import baostock as bs
 import arrow
@@ -6,11 +7,11 @@ import pandas as pd
 from datetime import date, datetime
 
 from . import Provider
-from autoquant.mixin.data import PriceMixin
-from autoquant import Market, PriceAdjustment
+from autoquant.mixin.data import IndexMixin, PriceMixin
+from autoquant import Market, PriceAdjustment, StocksIndex
 
 
-class BaostockProvider(PriceMixin, Provider):
+class BaostockProvider(PriceMixin, IndexMixin, Provider):
 
     def __init__(self) -> None:
         self.__adjustment_transformer = {
@@ -45,7 +46,8 @@ class BaostockProvider(PriceMixin, Provider):
             ).get_data()
 
             df = pd.DataFrame({
-                'code': data['code'],
+                'market':  data['code'].map(lambda x: Market[x.split('.')[0].upper()]),
+                'code': data['code'].map(lambda x: x.split('.')[-1]),
                 'datetime': data['date'].astype('datetime64[ns]'),
                 'open': data['open'].astype(float),
                 'close': data['close'].astype(float),
@@ -58,5 +60,24 @@ class BaostockProvider(PriceMixin, Provider):
             df.index = df['datetime']
             return df
 
+        finally:
+            bs.logout()
+
+    def stocks_of_index(self, index: StocksIndex, **kwargs):
+        func = {
+            StocksIndex.ZZ500: bs.query_zz500_stocks,
+            StocksIndex.HS300: bs.query_hs300_stocks,
+            StocksIndex.SZ50: bs.query_sz50_stocks
+        }[index]
+
+        bs.login()
+        try:
+            data = func().get_data()
+            return pd.DataFrame({
+                'updated_at': data['updateDate'],
+                'market':  data['code'].map(lambda x: Market[x.split('.')[0].upper()]),
+                'code': data['code'].map(lambda x: x.split('.')[-1]),
+                'name': data['code_name']
+            })
         finally:
             bs.logout()

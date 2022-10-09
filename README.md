@@ -21,12 +21,16 @@ With AutoQuant, users can easily try ideas to create better Quant investment str
 - [Advanced Topics](#advanced-topics)
   - [Market](#market)
   - [Metrics](#metrics)
+    - [Exclusive Metrics](#exclusive-metrics)
+    - [TA-Lib Metrics](#ta-lib-metrics)
   - [Price Provider](#price-provider)
   - [Financial Statement Provider](#financial-statement-provider)
 - [Contribution Guide](#contribution-guide)
   - [Test](#test)
     - [Test all](#test-all)
     - [Test specified test](#test-specified-test)
+  - [Development](#development)
+    - [Generate Requirements](#generate-requirements)
 
 
 
@@ -109,8 +113,30 @@ Market.US
 
 ## Metrics
 
+### Exclusive Metrics
+
 - Gross Rate Of Return
 - CAGR(Compound Annual Growth Rate) 
+
+
+### TA-Lib Metrics
+All the metrics in TA-Lib are available in AutoQuant.
+
+For Example, if you were using the metrics of TA-Lib like this:
+```
+from talib import SMA
+
+close = numpy.random.random(100)
+output = MOM(close, timeperiod=5)
+```
+
+You can simply change the import sentence to use the metrics in AutoQuant. The codes would be:
+```
+from AutoQuant import SMA
+
+close = numpy.random.random(100)
+output = MOM(close, timeperiod=5)
+```
 
 ## Price Provider
 
@@ -136,3 +162,11 @@ PYTHONPATH=./ pytest
 PYTHONPATH=./ pytest tests/<YOUR_DISIRE_FILE>.py -k "<YOUR_DISIRE_TEST_CASE>" -s
 ```
 
+
+## Development
+
+### Generate Requirements
+
+```
+pipreqs ./ --encoding=utf8 --force
+```

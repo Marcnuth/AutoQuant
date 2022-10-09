@@ -40,7 +40,8 @@ class TushareProvider(PriceMixin, Provider):
         )
 
         df = pd.DataFrame({
-            'code': data['ts_code'],
+            'market':  data['ts_code'].map(lambda x: Market[x.split('.')[0].upper()]),
+            'code': data['ts_code'].map(lambda x: x.split('.')[-1]),
             'datetime': data['trade_date'].astype('datetime64[ns]'),
             'open': data['open'],
             'close': data['close'],
