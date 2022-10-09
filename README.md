@@ -20,11 +20,20 @@ With AutoQuant, users can easily try ideas to create better Quant investment str
   - [Backtest](#backtest)
 - [Advanced Topics](#advanced-topics)
   - [Market](#market)
+  - [Index](#index)
   - [Metrics](#metrics)
     - [Exclusive Metrics](#exclusive-metrics)
     - [TA-Lib Metrics](#ta-lib-metrics)
-  - [Price Provider](#price-provider)
-  - [Financial Statement Provider](#financial-statement-provider)
+  - [Providers](#providers)
+    - [Price Provider](#price-provider)
+      - [Provides List](#provides-list)
+      - [API](#api)
+    - [Financial Statement Provider](#financial-statement-provider)
+      - [Provides List](#provides-list-1)
+      - [API](#api-1)
+    - [Index Provider](#index-provider)
+      - [Provides List](#provides-list-2)
+      - [API](#api-2)
 - [Contribution Guide](#contribution-guide)
   - [Test](#test)
     - [Test all](#test-all)
@@ -111,6 +120,18 @@ Market.HK
 Market.US
 ```
 
+## Index
+AutoQuant support the indexes in multiple markets now.
+Use StocksIndex Enum in codes:
+```
+from autoquant import StocksIndex
+
+StocksIndex.ZZ500
+StocksIndex.HS300
+StocksIndex.SZ50
+
+```
+
 ## Metrics
 
 ### Exclusive Metrics
@@ -138,16 +159,52 @@ close = numpy.random.random(100)
 output = MOM(close, timeperiod=5)
 ```
 
-## Price Provider
+
+## Providers
+### Price Provider
+
+#### Provides List
 
 - BaostockProvider
 - TushareProvider
 
+#### API
+```
+def daily_prices(self, market: Market, code: str, start: date, end: date, **kwargs)
 
-## Financial Statement Provider
+```
 
+
+### Financial Statement Provider
+
+
+#### Provides List
 - SnowballProvider
 
+
+#### API
+
+```
+def quarter_statement(self, market: Market, code: str, quarter: date, **kwargs)
+
+def yearly_balance_sheet(self, market: Market, code: str,  years: list, **kwargs)
+
+def yearly_income_sheets(self, market: Market, code: str, years: list, **kwargs)
+
+```
+
+### Index Provider
+
+
+#### Provides List
+- BaostockProvider
+
+
+#### API
+
+```
+def stocks_of_index(self, index: StocksIndex, **kwargs)
+```
 
 # Contribution Guide
 
