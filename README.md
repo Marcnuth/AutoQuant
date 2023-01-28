@@ -112,7 +112,7 @@ w.visualize()
 AutoQuant support Shanghai, Shenzhen, HongKong and US markets now.
 Use Market Enum in codes:
 
-```
+```python
 from autoquant import Market
 
 Market.SZ
@@ -126,7 +126,7 @@ Market.US
 AutoQuant support the indexes in multiple markets now.
 
 Use StocksIndex Enum in codes:
-```
+```python
 from autoquant import StocksIndex
 
 StocksIndex.ZZ500
@@ -136,7 +136,7 @@ StocksIndex.SZ50
 
 Use FundsIndex Enum in codes:
 
-```
+```python
 from autoquant import FundsIndex
 
 FundsIndex.CN_ALL
@@ -155,7 +155,8 @@ FundsIndex.CN_ETF
 All the metrics in TA-Lib are available in AutoQuant.
 
 For Example, if you were using the metrics of TA-Lib like this:
-```
+
+```python
 from talib import SMA
 
 close = numpy.random.random(100)
@@ -163,7 +164,8 @@ output = MOM(close, timeperiod=5)
 ```
 
 You can simply change the import sentence to use the metrics in AutoQuant. The codes would be:
-```
+
+```python
 from AutoQuant import SMA
 
 close = numpy.random.random(100)
@@ -181,7 +183,7 @@ output = MOM(close, timeperiod=5)
 - EastmoneyProvider
 
 #### API
-```
+```python
 def daily_prices(self, market: Market, code: str, start: date, end: date, **kwargs)
 
 ```
@@ -196,7 +198,7 @@ def daily_prices(self, market: Market, code: str, start: date, end: date, **kwar
 
 #### API
 
-```
+```python
 def quarter_statement(self, market: Market, code: str, quarter: date, **kwargs)
 
 def yearly_balance_sheet(self, market: Market, code: str,  years: list, **kwargs)
@@ -215,7 +217,7 @@ def yearly_income_sheets(self, market: Market, code: str, years: list, **kwargs)
 
 #### API
 
-```
+```python
 def stocks_of_index(self, index: StocksIndex, **kwargs)
 
 def funds_of_index(self, index: FundsIndex, **kwargs)
@@ -225,12 +227,12 @@ def funds_of_index(self, index: FundsIndex, **kwargs)
 
 ## Test
 ### Test all
-```
+```shell
 PYTHONPATH=./ pytest
 ```
 
 ### Test specified test
-```
+```shell
 PYTHONPATH=./ pytest tests/<YOUR_DISIRE_FILE>.py -k "<YOUR_DISIRE_TEST_CASE>" -s
 ```
 
@@ -239,12 +241,12 @@ PYTHONPATH=./ pytest tests/<YOUR_DISIRE_FILE>.py -k "<YOUR_DISIRE_TEST_CASE>" -s
 
 ### Generate Requirements
 
-```
+```shell
 pipreqs ./ --encoding=utf8 --force
 ```
 ### Package Update
 
-``` 
+```shell
 python3 -m build 
 python3 -m twine upload dist/*
 ```
