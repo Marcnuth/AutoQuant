@@ -40,6 +40,7 @@ With AutoQuant, users can easily try ideas to create better Quant investment str
     - [Test specified test](#test-specified-test)
   - [Development](#development)
     - [Generate Requirements](#generate-requirements)
+    - [Package Update](#package-update)
 
 
 
@@ -240,4 +241,10 @@ PYTHONPATH=./ pytest tests/<YOUR_DISIRE_FILE>.py -k "<YOUR_DISIRE_TEST_CASE>" -s
 
 ```
 pipreqs ./ --encoding=utf8 --force
+```
+### Package Update
+
+``` 
+python3 -m build 
+python3 -m twine upload dist/*
 ```
