@@ -117,11 +117,13 @@ from autoquant import Market
 Market.SZ
 Market.SH
 Market.HK
+Market.CN
 Market.US
 ```
 
 ## Index
 AutoQuant support the indexes in multiple markets now.
+
 Use StocksIndex Enum in codes:
 ```
 from autoquant import StocksIndex
@@ -129,7 +131,15 @@ from autoquant import StocksIndex
 StocksIndex.ZZ500
 StocksIndex.HS300
 StocksIndex.SZ50
+```
 
+Use FundsIndex Enum in codes:
+
+```
+from autoquant import FundsIndex
+
+FundsIndex.CN_ALL
+FundsIndex.CN_ETF
 ```
 
 ## Metrics
@@ -167,6 +177,7 @@ output = MOM(close, timeperiod=5)
 
 - BaostockProvider
 - TushareProvider
+- EastmoneyProvider
 
 #### API
 ```
@@ -198,12 +209,15 @@ def yearly_income_sheets(self, market: Market, code: str, years: list, **kwargs)
 
 #### Provides List
 - BaostockProvider
+- EastmoneyProvider
 
 
 #### API
 
 ```
 def stocks_of_index(self, index: StocksIndex, **kwargs)
+
+def funds_of_index(self, index: FundsIndex, **kwargs)
 ```
 
 # Contribution Guide

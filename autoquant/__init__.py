@@ -7,6 +7,7 @@ class Market(Enum):
     SZ = auto()
     HK = auto()
     US = auto()
+    CN = auto()  # 代指中国所有境内市场，沪/深/北
 
 
 class PriceAdjustment(Enum):
@@ -22,3 +23,11 @@ class StocksIndex(Enum):
     ZZ500 = auto()  # 中证500
     HS300 = auto()  # 沪深300
     SZ50 = auto()  # 上证50
+
+
+class FundsIndex(Enum):
+    '''基金'''
+
+    # A股
+    CN_ETF = auto()  # A股ETF指数基金
+    CN_ALL = auto()  # A股所有基金

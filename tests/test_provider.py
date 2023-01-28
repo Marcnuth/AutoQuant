@@ -1,7 +1,8 @@
 from autoquant.provider.tushare import TushareProvider
 from autoquant.collector import Collector
 from autoquant.provider.baostock import BaostockProvider
-from autoquant import Market
+from autoquant.provider.eastmoney import EastmoneyProvider
+from autoquant import Market, FundsIndex
 from datetime import date
 
 
@@ -32,3 +33,16 @@ def test_tushare():
 
     data = collector.daily_prices(market=Market.SH, code='601318', start=date(2021, 11, 1), end=date(2021, 11, 5))
     assert data.shape[0] == 5
+
+
+def test_eastmoney():
+    collector = Collector().with_price_provider(EastmoneyProvider()).with_index_provider(EastmoneyProvider())
+
+    data = collector.daily_prices(market=Market.CN, code='320007', start=date(2022, 1, 1), end=date(2022, 3, 1))
+    assert data.shape == (36, 8)
+
+    data = collector.funds_of_index(index=FundsIndex.CN_ALL)
+    assert data.shape == (18014, 4)
+
+    data = collector.funds_of_index(index=FundsIndex.CN_ETF)
+    assert data.shape == (1468, 4)

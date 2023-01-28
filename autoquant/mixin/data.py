@@ -1,7 +1,7 @@
 from datetime import MAXYEAR, date
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 
-from autoquant import Market, StocksIndex
+from autoquant import Market, StocksIndex, FundsIndex
 
 
 class PriceMixin:
@@ -12,24 +12,28 @@ class PriceMixin:
         start: the start date
         end: then end date
         '''
-        pass
+        raise NotImplementedError
 
 
 class StatementMixin:
     @abstractmethod
     def quarter_statement(self, market: Market, code: str, quarter: date, **kwargs):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def yearly_balance_sheet(self, market: Market, code: str,  years: list, **kwargs):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def yearly_income_sheets(self, market: Market, code: str, years: list, **kwargs):
-        pass
+        raise NotImplementedError
 
 
 class IndexMixin:
     @abstractmethod
     def stocks_of_index(self, index: StocksIndex, **kwargs):
-        pass
+        raise NotImplementedError
+
+    @abstractmethod
+    def funds_of_index(self, index: FundsIndex, **kwargs):
+        raise NotImplementedError

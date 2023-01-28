@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 
 from autoquant.provider import Provider
 from autoquant.mixin.data import PriceMixin, StatementMixin, IndexMixin
-from autoquant import Market, StocksIndex
+from autoquant import Market, StocksIndex, FundsIndex
 
 from autoquant.provider.baostock import BaostockProvider
 from autoquant.provider.snowball import SnowballProvider
@@ -63,3 +63,6 @@ class Collector(PriceMixin, StatementMixin, IndexMixin, _Collector):
 
     def stocks_of_index(self, index: StocksIndex, **kwargs):
         return self.__iter_providers(self.index_providers, self.stocks_of_index.__name__, index=index, **kwargs)
+
+    def funds_of_index(self, index: FundsIndex, **kwargs):
+        return self.__iter_providers(self.index_providers, self.funds_of_index.__name__, index=index, **kwargs)
