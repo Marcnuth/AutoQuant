@@ -55,4 +55,4 @@ def test_ebo():
     data = collector.daily_prices(market=Market.SZ, code='000002', start=date(2020, 1, 1), end=date(2022, 1, 1))
     w = Workflow().with_broker(broker).with_strategy(EBO).backtest(data)
     print(w.summary())
-    w.visualize(width=20, height=10, dpi=600, tight=False)
+    w.visualize(crc=False, buysell=True, iplot=False, width=20, height=10, dpi=600, tight=False)

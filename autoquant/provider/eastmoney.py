@@ -57,6 +57,7 @@ class EastmoneyProvider(PriceMixin, IndexMixin, Provider):
                 'market': market,
                 'code': code,
                 'datetime': res_df['净值日期'].map(lambda x: x.strip('*')).astype('datetime64[ns]'),
+                'open': res_df['单位净值'].astype(float, errors='ignore'),
                 'close': res_df['单位净值'].astype(float, errors='ignore'),
                 'close_acc': res_df['累计净值'].astype(float, errors='ignore'),
                 'pct_change': res_df['日增长率'].map(lambda x: x.strip('%')).astype(float, errors='ignore'),
@@ -88,6 +89,23 @@ class EastmoneyProvider(PriceMixin, IndexMixin, Provider):
                 table[19].get_text(),  # 跟踪标的
             ]
 
+        def __only_HUAXIA_SECTOR_ETF(df):
+            sector_names = [
+                "消费", "生物", "医药", "健康", "环保", "传媒", "金融", "券商",
+                "地产", "银行", "电子", "计算机", "食品饮料", "军工", "有色金属",
+                "家用电器", "基建", "钢铁", "饲料", "半导体", "人工智能", "科技",
+                "煤炭", "能源化工", "稀土", "机械设备", "光伏", "新能源汽车",
+                "畜牧养殖", "互联网", "新能源", "材料", "农业", "碳中和", "电力",
+                "数字经济", "动漫游戏", "大数据", "养老", "影视", "智能制造"]
+
+            def __is_sector(row):
+                for s in sector_names:
+                    if s in row['name'] and not row['name'].endswith('C') and '华夏' in row['name']:
+                        return True
+                return False
+
+            return df[df.apply(__is_sector, axis=1)]
+
         res = requests.get(self._API_FUNDS_INDEX, headers={'User-Agent': self._UA})
         res.encoding = "utf-8"
         list_ = eval(re.findall(r'\[.*\]', res.text)[0])
@@ -103,7 +121,8 @@ class EastmoneyProvider(PriceMixin, IndexMixin, Provider):
         filtered = {
             FundsIndex.CN_ALL: lambda: all,
             FundsIndex.CN_ETF: lambda: all[all['name'].str.contains('ETF')],
-            FundsIndex.CN_QDII: lambda: all[all['name'].str.contains('QDII')]
+            FundsIndex.CN_QDII: lambda: all[all['name'].str.contains('QDII')],
+            FundsIndex.HUAXIA_SECTOR_ETF: lambda: __only_HUAXIA_SECTOR_ETF(all)
         }[index]()
 
         if not kwargs.get('details', False):

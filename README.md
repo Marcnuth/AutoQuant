@@ -21,8 +21,11 @@ With AutoQuant, users can easily try ideas to create better Quant investment str
 - [Advanced Topics](#advanced-topics)
   - [Market](#market)
   - [Index](#index)
+  - [Indicators](#indicators)
+    - [Specific Indicators](#specific-indicators)
+    - [Backtrader Indicators](#backtrader-indicators)
   - [Metrics](#metrics)
-    - [Exclusive Metrics](#exclusive-metrics)
+    - [Specific Metrics](#specific-metrics)
     - [TA-Lib Metrics](#ta-lib-metrics)
   - [Providers](#providers)
     - [Price Provider](#price-provider)
@@ -141,11 +144,35 @@ from autoquant import FundsIndex
 
 FundsIndex.CN_ALL
 FundsIndex.CN_ETF
+FundsIndex.CN_QDII
+FundsIndex.HUAXIA_SECTOR_ETF
 ```
+
+## Indicators
+
+### Specific Indicators
+- ParityIndex
+- AdjustedMomentum
+
+### Backtrader Indicators
+All the indicators in Backtrader are available in AutoQuant.
+
+For Example, if you were using the indicators of Backtrader like this:
+
+```python
+from backtrader.indicators import Momentum
+```
+
+You can simply change the import sentence to use the indicators in AutoQuant. The codes would be:
+
+```python
+from autoquant.indicators import Momentum
+```
+
 
 ## Metrics
 
-### Exclusive Metrics
+### Specific Metrics
 
 - Gross Rate Of Return
 - CAGR(Compound Annual Growth Rate) 

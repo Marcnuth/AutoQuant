@@ -32,3 +32,5 @@ class FundsIndex(Enum):
     CN_ETF = auto()  # A股ETF指数基金
     CN_ALL = auto()  # A股所有基金
     CN_QDII = auto()
+
+    HUAXIA_SECTOR_ETF = auto()  # 华夏证券下的行业ETF基金

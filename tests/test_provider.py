@@ -41,8 +41,11 @@ def test_eastmoney():
     data = collector.daily_prices(market=Market.CN, code='320007', start=date(2022, 1, 1), end=date(2022, 3, 1))
     assert data.shape == (36, 8)
 
+    data = collector.daily_prices(market=Market.CN, code='007937', start=date(2022, 1, 1), end=date(2022, 3, 1))
+    print(data)
+
     data = collector.funds_of_index(index=FundsIndex.CN_ALL)
-    assert data.shape == (18014, 4)
+    assert data.shape == (18268, 4)
 
     data = collector.funds_of_index(index=FundsIndex.CN_ETF)
-    assert data.shape == (1468, 4)
+    assert data.shape == (1497, 4)

@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="AutoQuant",
-    version="1.0.1",
+    version="1.0.1 ",
     author="NAUTIDEA",
     author_email="xian@nautidea.com",
     description="Auto Quant",
@@ -22,7 +22,7 @@ setuptools.setup(
         'Programming Language :: Python :: 3',
         "Operating System :: OS Independent",
     ],
-    package_dir={"": "autoquant"},
+    package_dir={"autoquant": "autoquant"},
     packages=setuptools.find_packages(where="autoquant"),
     python_requires=">=3.6",
 )

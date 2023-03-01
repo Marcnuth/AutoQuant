@@ -5,6 +5,8 @@ from autoquant.collector import Collector
 from autoquant.strategy import Strategy
 from autoquant.broker import Broker
 
+from backtrader.observers import Broker, Trades, BuySell
+
 import backtrader as bt
 import pandas as pd
 
@@ -14,10 +16,10 @@ class Workflow:
         self.collector = None
         self.strategy = None
         self.broker = None
-        self._cerebro = bt.Cerebro()
+        self._cerebro = bt.Cerebro(stdstats=False)
         self._cerebro.addanalyzer(bt.analyzers.SharpeRatio, _name='SharpeRatio', timeframe=bt.TimeFrame.Years)
         self._cerebro.addanalyzer(bt.analyzers.DrawDown, _name='DrawDown')
-        self._cerebro.addanalyzer(bt.analyzers.Returns, _name='Returns',  timeframe=bt.TimeFrame.Years)
+        self._cerebro.addanalyzer(bt.analyzers.Returns, _name='Returns', timeframe=bt.TimeFrame.Years)
         self._cerebro.addanalyzer(bt.analyzers.TimeReturn, _name='TimeReturn')
 
         self._cerebro_results = None
@@ -43,7 +45,7 @@ class Workflow:
         self.strategy.train()
         return self
 
-    def backtest(self, *data,  **kwargs):
+    def backtest(self, *data, **kwargs):
         for d in data:
             feeds = bt.feeds.PandasData(dataname=d, name=f'{d["market"][0].name}.{d["code"][0]}', fromdate=d['datetime'][0], todate=d['datetime'][-1])
             self._cerebro.adddata(feeds)
@@ -105,7 +107,7 @@ class Workflow:
             # 同时绘制双轴的图例
             h1, l1 = ax1.get_legend_handles_labels()
             h2, l2 = ax2.get_legend_handles_labels()
-            plt.legend(h1+h2, l1+l2, fontsize=12, loc='upper left', ncol=1)
+            plt.legend(h1 + h2, l1 + l2, fontsize=12, loc='upper left', ncol=1)
 
             fig.tight_layout()  # 规整排版
             plt.show()
@@ -123,5 +125,5 @@ class Workflow:
             f'[Overview]: Final Capital={self._cerebro.broker.getvalue():.2f}',
             f'[Metrics]: Sharp Ratio={self._cerebro_results[0].analyzers.SharpeRatio.get_analysis().get("sharperatio"):.4f}',
             f'[Metrics]: Max DrawDown={self._cerebro_results[0].analyzers.DrawDown.get_analysis().max["drawdown"]:.4f}%',
-            f'[Metrics]: CAGR={self._cerebro_results[0].analyzers.Returns.get_analysis().get("rtot"):.4f}%',
+            f'[Metrics]: CAGR={self._cerebro_results[0].analyzers.Returns.get_analysis().get("rnorm100"):.4f}%',
         ])
