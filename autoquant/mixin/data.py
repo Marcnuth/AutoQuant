@@ -21,11 +21,15 @@ class StatementMixin:
         raise NotImplementedError
 
     @abstractmethod
-    def yearly_balance_sheet(self, market: Market, code: str,  years: list, **kwargs):
+    def yearly_balance_sheet(self, market: Market, code: str, years: list, **kwargs):
         raise NotImplementedError
 
     @abstractmethod
     def yearly_income_sheets(self, market: Market, code: str, years: list, **kwargs):
+        raise NotImplementedError
+
+    @abstractmethod
+    def yearly_flow_sheets(self, market: Market, code: str, years: list, **kwargs):
         raise NotImplementedError
 
 

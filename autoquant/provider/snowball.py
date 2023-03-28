@@ -82,14 +82,20 @@ class SnowballProvider(StatementMixin, Provider):
 
             report = data.json()['data']['list'][0]
             return pd.DataFrame({
-                'total_current_assets': report['total_current_assets'][0],
-                'total_noncurrent_assets': report['total_noncurrent_assets'][0],
-                'total_assets': report['total_assets'][0],
-                'total_current_liabilities': report['total_current_liab'][0],
-                'total_noncurrent_liabilities': report['total_noncurrent_liab'][0],
-                'total_liabilities': report['total_liab'][0],
-                'total_shareholders_equity': report['total_holders_equity'][0],
-                'total_atsopc_equity': report['total_quity_atsopc'][0],
+                #-------------- 资产核心数据
+                'currency_funds': report['currency_funds'][0],  # 货币资金
+                'account_receivable': report['account_receivable'][0],  # 应收账款
+                'inventory': report['inventory'][0],  # 存货
+                'tradable_fnncl_assets': report['tradable_fnncl_assets'][0],  # 交易性金融资产
+                'fixed_asset_sum': report['fixed_asset_sum'][0],  # 固定资产
+                'total_assets': report['total_assets'][0],  # 资产总计
+                #-------------- 负债核心数据
+                'st_loan': report['st_loan'][0],  # 短期借款
+                'lt_loan': report['lt_loan'][0],  # 长期借款
+                'total_liab': report['total_liab'][0],  # 负债合计
+                # --------------所得者权益核心数据
+                'shares': report['shares'][0],  # 实收资本（或股本）
+                'undstrbtd_profit': report['undstrbtd_profit'][0],  # 未分配利润
             }, index=[arrow.get(report['report_date']).format('YYYY')])
 
         formatted_code = self.__format_code(market, code)
@@ -106,17 +112,40 @@ class SnowballProvider(StatementMixin, Provider):
 
             report = data.json()['data']['list'][0]
             return pd.DataFrame({
-                'total_revenue': report['total_revenue'][0],
-                'total_operating_costs': report['operating_costs'][0],
-                'operating_profit': report['op'][0],
-                'total_profit': report['profit_total_amt'][0],
-                'net_profit': report['net_profit'][0],
-                'net_profit_atsopc': report['net_profit_atsopc'][0],
-                'other_comprehensive_income': report['othr_compre_income'][0],
-                'total_comprehensive_income': report['total_compre_income'][0],
+                # -------------- 收入
+                'revenue': report['revenue'][0],  # 营业收入
+                # -------------- 费用
+                'sales_fee': report['sales_fee'][0],  # 销售费用
+                'manage_fee': report['manage_fee'][0],  # 管理费用
+                'financing_expenses': report['financing_expenses'][0],  # 财务费用
+                # -------------- 收益
+                'invest_income': report['invest_income'][0],  # 投资收益
+                # -------------- 损失
+                'asset_impairment_loss': report['asset_impairment_loss'][0],  # 资产减值损失
+                # -------------- 其他
+                'net_profit': report['net_profit'][0],  # 净利润
             }, index=[arrow.get(report['report_date']).format('YYYY')])
 
         formatted_code = self.__format_code(market, code)
         region = self.__url_region(market)
         dfs = [__yearly_income_sheet(y) for y in years]
+        return pd.concat(dfs)
+
+    def yearly_flow_sheets(self, market: Market, code: str, years: list, **kwargs):
+        def __yearly_flow_sheet(year):
+            dt = int(datetime(year, 12, 31, 0, 0, 0, 1000).timestamp() * 1000)
+            data = self.__get(market, code, f'https://stock.xueqiu.com/v5/stock/finance/{region}/cash_flow.json', {
+                'symbol': formatted_code, 'type': 'Q4', 'is_detail': 'true', 'count': '1', 'timestamp': dt
+            })
+
+            report = data.json()['data']['list'][0]
+            return pd.DataFrame({
+                'ncf_from_oa': report['ncf_from_oa'][0],  # 经营活动产生的现金流量净额
+                'ncf_from_ia': report['ncf_from_ia'][0],  # 投资活动产生的现金流量净额
+                'ncf_from_fa': report['ncf_from_fa'][0],  # 筹资活动产生的现金流量净额
+            }, index=[arrow.get(report['report_date']).format('YYYY')])
+
+        formatted_code = self.__format_code(market, code)
+        region = self.__url_region(market)
+        dfs = [__yearly_flow_sheet(y) for y in years]
         return pd.concat(dfs)

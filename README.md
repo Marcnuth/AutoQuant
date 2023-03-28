@@ -232,6 +232,8 @@ def yearly_balance_sheet(self, market: Market, code: str,  years: list, **kwargs
 
 def yearly_income_sheets(self, market: Market, code: str, years: list, **kwargs)
 
+def yearly_flow_sheets(self, market: Market, code: str, years: list, **kwargs)
+
 ```
 
 ### Index Provider

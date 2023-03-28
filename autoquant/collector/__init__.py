@@ -55,11 +55,14 @@ class Collector(PriceMixin, StatementMixin, IndexMixin, _Collector):
     def quarter_statement(self, market: Market, code: str, quarter: date, **kwargs):
         return self.__iter_providers(self.statement_providers, self.quarter_statement.__name__, market=market, code=code, quarter=quarter, **kwargs)
 
-    def yearly_balance_sheet(self, market: Market, code: str,  years: list, **kwargs):
+    def yearly_balance_sheet(self, market: Market, code: str, years: list, **kwargs):
         return self.__iter_providers(self.statement_providers, self.yearly_balance_sheet.__name__, market=market, code=code, years=years, **kwargs)
 
     def yearly_income_sheets(self, market: Market, code: str, years: list, **kwargs):
         return self.__iter_providers(self.statement_providers, self.yearly_income_sheets.__name__, market=market, code=code, years=years, **kwargs)
+
+    def yearly_flow_sheets(self, market: Market, code: str, years: list, **kwargs):
+        return self.__iter_providers(self.statement_providers, self.yearly_flow_sheets.__name__, market=market, code=code, years=years, **kwargs)
 
     def stocks_of_index(self, index: StocksIndex, **kwargs):
         return self.__iter_providers(self.index_providers, self.stocks_of_index.__name__, index=index, **kwargs)

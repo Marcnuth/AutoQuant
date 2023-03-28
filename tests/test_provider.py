@@ -2,6 +2,7 @@ from autoquant.provider.tushare import TushareProvider
 from autoquant.collector import Collector
 from autoquant.provider.baostock import BaostockProvider
 from autoquant.provider.eastmoney import EastmoneyProvider
+from autoquant.provider.snowball import SnowballProvider
 from autoquant import Market, FundsIndex
 from datetime import date
 
@@ -49,3 +50,10 @@ def test_eastmoney():
 
     data = collector.funds_of_index(index=FundsIndex.CN_ETF)
     assert data.shape == (1497, 4)
+
+
+def test_snowball():
+    collector = Collector().with_statement_provider(SnowballProvider())
+
+    data = collector.yearly_flow_sheets(market=Market.SZ, code='002594', years=[2021])
+    assert data.shape == (1, 3)
