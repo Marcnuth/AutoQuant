@@ -1,0 +1,10 @@
+site_name: AutoQuant - QOGIR
+nav:
+    - Home: index.md
+    - Quick Start: quick_start.md
+    - Advanced Topics: advanced.md
+    - Contribution: contribution.md
+    - About: https://www.nautidea.com
+theme: readthedocs
+repo_url: https://github.com/Marcnuth/AutoQuant
+repo_name: GitHub ❤ AutoQuant

@@ -7,7 +7,7 @@ from datetime import date, datetime
 from . import Provider
 from autoquant.mixin.data import StatementMixin
 from autoquant import Market
-
+from autoquant.log import logger
 
 class SnowballProvider(StatementMixin, Provider):
 
@@ -66,11 +66,12 @@ class SnowballProvider(StatementMixin, Provider):
         })
 
         report = data.json()['data']['list'][0]
+        __safe_get = lambda key:  report.get(key, [None])[0]
         return pd.DataFrame({
-            'revenue': report['total_revenue'][0],
-            'net_profit': report['net_profit_atsopc'][0],
-            'eps': report['basic_eps'][0],
-            'avg_roe': report['avg_roe'][0]
+            'revenue': __safe_get('total_revenue'),
+            'net_profit': __safe_get('net_profit_atsopc'),
+            'eps': __safe_get('basic_eps'),
+            'avg_roe': __safe_get('avg_roe')
         }, index=[arrow.get(report['report_date']).format('YYYYMM')])
 
     def yearly_balance_sheet(self, market: Market, code: str, years: list, **kwargs):
@@ -81,21 +82,25 @@ class SnowballProvider(StatementMixin, Provider):
             })
 
             report = data.json()['data']['list'][0]
+            __safe_get = lambda key:  report.get(key, [None])[0]
             return pd.DataFrame({
+                'market': market,
+                'code': code,
+                'year': year,
                 #-------------- 资产核心数据
-                'currency_funds': report['currency_funds'][0],  # 货币资金
-                'account_receivable': report['account_receivable'][0],  # 应收账款
-                'inventory': report['inventory'][0],  # 存货
-                'tradable_fnncl_assets': report['tradable_fnncl_assets'][0],  # 交易性金融资产
-                'fixed_asset_sum': report['fixed_asset_sum'][0],  # 固定资产
-                'total_assets': report['total_assets'][0],  # 资产总计
+                'money_funds': __safe_get('currency_funds'),                                    # 货币资金
+                'account_receivable': __safe_get('account_receivable'),                         # 应收账款
+                'inventory': __safe_get('inventory'),                                           # 存货
+                'trading_financial_assets': __safe_get('tradable_fnncl_assets'),                # 交易性金融资产
+                'fixed_assets': __safe_get('fixed_asset'),                                      # 固定资产
+                'asset_sum': __safe_get('total_assets'),                                        # 资产总计
                 #-------------- 负债核心数据
-                'st_loan': report['st_loan'][0],  # 短期借款
-                'lt_loan': report['lt_loan'][0],  # 长期借款
-                'total_liab': report['total_liab'][0],  # 负债合计
+                'st_loan': __safe_get('st_loan'),  # 短期借款
+                'lt_loan': __safe_get('lt_loan'),  # 长期借款
+                'total_liab': __safe_get('total_liab'),  # 负债合计
                 # --------------所得者权益核心数据
-                'shares': report['shares'][0],  # 实收资本（或股本）
-                'undstrbtd_profit': report['undstrbtd_profit'][0],  # 未分配利润
+                'shares': __safe_get('shares'),  # 实收资本（或股本）
+                'undstrbtd_profit': __safe_get('undstrbtd_profit'),  # 未分配利润
             }, index=[arrow.get(report['report_date']).format('YYYY')])
 
         formatted_code = self.__format_code(market, code)
@@ -111,19 +116,20 @@ class SnowballProvider(StatementMixin, Provider):
             })
 
             report = data.json()['data']['list'][0]
+            __safe_get = lambda key:  report.get(key, [None])[0]
             return pd.DataFrame({
                 # -------------- 收入
-                'revenue': report['revenue'][0],  # 营业收入
+                'revenue': __safe_get('revenue'),  # 营业收入
                 # -------------- 费用
-                'sales_fee': report['sales_fee'][0],  # 销售费用
-                'manage_fee': report['manage_fee'][0],  # 管理费用
-                'financing_expenses': report['financing_expenses'][0],  # 财务费用
+                'sales_fee': __safe_get('sales_fee'),  # 销售费用
+                'manage_fee': __safe_get('manage_fee'),  # 管理费用
+                'financing_expenses': __safe_get('financing_expenses'),  # 财务费用
                 # -------------- 收益
-                'invest_income': report['invest_income'][0],  # 投资收益
+                'invest_income': __safe_get('invest_income'),  # 投资收益
                 # -------------- 损失
-                'asset_impairment_loss': report['asset_impairment_loss'][0],  # 资产减值损失
+                'asset_impairment_loss': __safe_get('asset_impairment_loss'),  # 资产减值损失
                 # -------------- 其他
-                'net_profit': report['net_profit'][0],  # 净利润
+                'net_profit': __safe_get('net_profit'),  # 净利润
             }, index=[arrow.get(report['report_date']).format('YYYY')])
 
         formatted_code = self.__format_code(market, code)
@@ -139,10 +145,11 @@ class SnowballProvider(StatementMixin, Provider):
             })
 
             report = data.json()['data']['list'][0]
+            __safe_get = lambda key:  report.get(key, [None])[0]
             return pd.DataFrame({
-                'ncf_from_oa': report['ncf_from_oa'][0],  # 经营活动产生的现金流量净额
-                'ncf_from_ia': report['ncf_from_ia'][0],  # 投资活动产生的现金流量净额
-                'ncf_from_fa': report['ncf_from_fa'][0],  # 筹资活动产生的现金流量净额
+                'ncf_from_oa': __safe_get('ncf_from_oa'),  # 经营活动产生的现金流量净额
+                'ncf_from_ia': __safe_get('ncf_from_ia'),  # 投资活动产生的现金流量净额
+                'ncf_from_fa': __safe_get('ncf_from_fa'),  # 筹资活动产生的现金流量净额
             }, index=[arrow.get(report['report_date']).format('YYYY')])
 
         formatted_code = self.__format_code(market, code)

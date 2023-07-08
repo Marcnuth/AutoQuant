@@ -1,6 +1,5 @@
 arrow==1.2.2
 backtrader==1.9.76.123
-data_collector==0.0.1
 fire==0.4.0
 loguru==0.6.0
 lxml==4.6.3
@@ -14,3 +13,6 @@ setuptools==58.0.4
 TA_Lib==0.4.19
 pyfolio==0.9.2
 matplotlib==3.2.2
+mkdocs==1.4.3
+tushare==1.2.89
+baostock==0.8.8
