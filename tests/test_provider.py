@@ -3,8 +3,11 @@ from autoquant.collector import Collector
 from autoquant.provider.baostock import BaostockProvider
 from autoquant.provider.eastmoney import EastmoneyProvider
 from autoquant.provider.snowball import SnowballProvider
+from autoquant.provider.local import LocalProvider
 from autoquant import Market, FundsIndex
 from datetime import date
+from pathlib import Path
+
 
 
 def test_baostock():
@@ -22,7 +25,7 @@ def test_tushare():
 
     collector = Collector().with_price_provider(TushareProvider(token='db07d243e5e7f246e4e53b94f79d88ad3c99aea7a700769dc0b1738b'))
 
-    data = collector.daily_prices(market=Market.SZ, code='002594', start=date(2021, 11, 1), end=date(2021, 11, 5))
+    data = collector.daily_prices(market=Market.SH, code='600809', start=date(2010, 1, 1), end=date(2011, 1, 1))
     assert data.shape[0] == 5
     assert data['code'][0] == '002594.SZ'
     assert data['open'][4] == 301.41
@@ -57,3 +60,21 @@ def test_snowball():
 
     data = collector.yearly_flow_sheets(market=Market.SZ, code='002594', years=[2021])
     assert data.shape == (1, 3)
+
+
+
+def test_local():
+    data_dir = Path(__file__).parent.parent / 'data'
+    print(data_dir)
+
+    collector = Collector().with_price_provider(LocalProvider(file_rglob='*.csv', dir=data_dir))
+
+    data = collector.daily_prices(market=Market.SH, code='600809', start=date(2010, 1, 1), end=date(2011, 1, 1))
+    assert data.shape[0] == 242
+    assert data['code'][0] == '600809'
+    assert data['open'][4] == 12.18
+    assert data['close'][4] == 11.94
+    assert data['high'][0] == 13.24
+    assert data['low'][1] == 12.92
+    assert data['volume'][2] == 11510768.0
+    assert data['turnover'][3] == 283782880.0

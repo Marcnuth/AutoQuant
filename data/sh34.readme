@@ -1,0 +1,15 @@
+# SH34 
+
+A dataset contains day-level price and volume
+information of 34 stocks from Shanghai Stock
+Exchange with a total of 99212 data samples.
+
+BREAKDOWN-BY INSTANCE
+Total instances 99212
+Training 79424
+Validation 9894
+Testing 9894
+Total cryptocurrencies 34
+Instances per stock 2918
+
+- source: https://github.com/TradeMaster-NTU/TradeMaster/tree/main/data/data/sz50
