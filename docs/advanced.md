@@ -100,6 +100,7 @@ output = MOM(close, timeperiod=5)
 - BaostockProvider
 - TushareProvider
 - EastmoneyProvider
+- LocalProvider
 
 #### API
 ```python
