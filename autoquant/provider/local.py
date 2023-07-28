@@ -21,7 +21,7 @@ class LocalProvider(PriceMixin, Provider):
                 continue
 
             assert f.suffix == '.csv', f'File<{f.name}> matches the rglob<{file_rglob}>, but the file format is not CSV. Only CSV file is supported!'
-            df = pd.read_csv(f.as_posix())
+            df = pd.read_csv(f.as_posix(), converters= {"market": lambda x: Market[x.upper()]})
             df['code'] = df['code'].astype(str)
             df['datetime'] = df['datetime'].astype('datetime64[ns]')
             if df.isnull().any().any():
@@ -41,7 +41,7 @@ class LocalProvider(PriceMixin, Provider):
 
     def daily_prices(self, market: Market, code: str, start: date, end: date, **kwargs):
 
-        df = self.__data.query('code == @code & market == @market.name & datetime >= @start & datetime <= @end')
+        df = self.__data.query('code == @code & market == @market & datetime >= @start & datetime <= @end')
         
         df.index = df['datetime']
         return df

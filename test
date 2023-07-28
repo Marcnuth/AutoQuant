@@ -1,0 +1,94 @@
+============================= test session starts =============================
+platform win32 -- Python 3.10.9, pytest-7.1.2, pluggy-1.0.0
+rootdir: E:\codes\AutoQuant
+plugins: anyio-3.5.0, hydra-core-1.3.2, typeguard-2.13.3
+[2023-07-28 15:21:42] [8924:14468] [DEBUG] [autoquant.log] log.py:<module>:32 AutoQuant logs will be printed in console
+collected 1 item
+
+tests\indicator\test_alpha101.py E:\codes\AutoQuant\data
+F
+
+================================== FAILURES ===================================
+________________________________ test_alpha101 ________________________________
+
+cls = <class 'pandas.core.series.Series'>, axis = 1
+
+    @final
+    @classmethod
+    def _get_axis_number(cls, axis: Axis) -> int:
+        try:
+>           return cls._AXIS_TO_AXIS_NUMBER[axis]
+E           KeyError: 1
+
+E:\Users\xian\anaconda3\lib\site-packages\pandas\core\generic.py:554: KeyError
+
+During handling of the above exception, another exception occurred:
+
+    def test_alpha101():
+    
+        data_dir = Path(__file__).parent.parent.parent / 'data'
+        print(data_dir)
+    
+        collector = Collector().with_price_provider(LocalProvider(file_rglob='*.csv', dir=data_dir))
+    
+        data0 = collector.daily_prices(market=Market.SH, code='600809', start=date(2010, 1, 1), end=date(2011, 1, 1))
+        data1 = collector.daily_prices(market=Market.SH, code='600745', start=date(2010, 1, 1), end=date(2011, 1, 1))
+    
+    
+>       a1_vs = Alphas101(data0).alpha001()
+
+tests\indicator\test_alpha101.py:746: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\indicator\test_alpha101.py:214: in alpha001
+    return rank(ts_argmax(inner ** 2, 5)) - 0.5
+tests\indicator\test_alpha101.py:152: in rank
+    return df.rank(axis=1, method='min', pct=True)
+E:\Users\xian\anaconda3\lib\site-packages\pandas\core\generic.py:9130: in rank
+    axis = self._get_axis_number(axis)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'pandas.core.series.Series'>, axis = 1
+
+    @final
+    @classmethod
+    def _get_axis_number(cls, axis: Axis) -> int:
+        try:
+            return cls._AXIS_TO_AXIS_NUMBER[axis]
+        except KeyError:
+>           raise ValueError(f"No axis named {axis} for object type {cls.__name__}")
+E           ValueError: No axis named 1 for object type Series
+
+E:\Users\xian\anaconda3\lib\site-packages\pandas\core\generic.py:556: ValueError
+============================== warnings summary ===============================
+..\..\Users\xian\anaconda3\lib\site-packages\pandas_datareader\compat\__init__.py:11
+  E:\Users\xian\anaconda3\lib\site-packages\pandas_datareader\compat\__init__.py:11: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+    PANDAS_VERSION = LooseVersion(pd.__version__)
+
+..\..\Users\xian\anaconda3\lib\site-packages\pandas_datareader\compat\__init__.py:13
+  E:\Users\xian\anaconda3\lib\site-packages\pandas_datareader\compat\__init__.py:13: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+    PANDAS_0210 = PANDAS_VERSION >= LooseVersion("0.21.0")
+
+..\..\Users\xian\anaconda3\lib\site-packages\pandas_datareader\compat\__init__.py:14
+  E:\Users\xian\anaconda3\lib\site-packages\pandas_datareader\compat\__init__.py:14: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+    PANDAS_0220 = PANDAS_VERSION >= LooseVersion("0.22.0")
+
+..\..\Users\xian\anaconda3\lib\site-packages\pandas_datareader\compat\__init__.py:15
+  E:\Users\xian\anaconda3\lib\site-packages\pandas_datareader\compat\__init__.py:15: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+    PANDAS_0230 = PANDAS_VERSION >= LooseVersion("0.23.0")
+
+..\..\Users\xian\anaconda3\lib\site-packages\pyfolio\pos.py:26
+  E:\Users\xian\anaconda3\lib\site-packages\pyfolio\pos.py:26: UserWarning: Module "zipline.assets" not found; mutltipliers will not be applied to position notionals.
+    warnings.warn(
+
+..\..\Users\xian\anaconda3\lib\site-packages\jupyter_client\connect.py:27
+  E:\Users\xian\anaconda3\lib\site-packages\jupyter_client\connect.py:27: DeprecationWarning: Jupyter is migrating its paths to use standard platformdirs
+  given by the platformdirs library.  To remove this warning and
+  see the appropriate new directories, set the environment variable
+  `JUPYTER_PLATFORM_DIRS=1` and then run `jupyter --paths`.
+  The use of platformdirs will be the default in `jupyter_core` v6
+    from jupyter_core.paths import jupyter_data_dir
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/indicator/test_alpha101.py::test_alpha101 - ValueError: No axis ...
+======================== 1 failed, 6 warnings in 7.28s ========================
