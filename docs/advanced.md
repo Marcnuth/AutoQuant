@@ -42,6 +42,13 @@ FundsIndex.HUAXIA_SECTOR_ETF
 
 ## Indicators
 
+### World Quant Alpha 101
+From the paper <101 Formulaic Alphas>: https://arxiv.org/ftp/arxiv/papers/1601/1601.00991.pdf
+
+- WQA1: (rank(Ts_ArgMax(SignedPower(((returns < 0) ? stddev(returns, 20) : close), 2.), 5)) - 0.5)
+- WQA2: (-1 * correlation(rank(delta(log(volume), 2)), rank(((close - open) / open)), 6))
+- ...
+
 ### Specific Indicators
 - ParityIndex
 - AdjustedMomentum
