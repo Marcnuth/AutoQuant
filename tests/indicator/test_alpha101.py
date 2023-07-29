@@ -30,6 +30,7 @@ def test_alpha101():
         def __init__(self):
             self.a1 = WQA1()
             self.a2 = WQA2()
+            self.a3 = WQA3()
             
         def next(self):
             #print('Alpha1:', self.a1[0])

@@ -1,5 +1,6 @@
 '''
-Those Alphas come from the paper: https://arxiv.org/ftp/arxiv/papers/1601/1601.00991.pdf
+Those Alphas come from the paper: https://arxiv.org/ftp/arxiv/papers/1601/1601.00991.pdf。
+Cause there's some unclear definitions from the paper, we also take the JoinQuant's implementation(https://www.joinquant.com/data/dict/alpha101) as a reference.
 '''
 
 from backtrader.indicators import Highest, StdDev, Indicator
@@ -108,3 +109,65 @@ class WQA2(Indicator):
 
         # Set the value of alpha2
         self.lines.wqa2[0] = -1 * correlation
+
+
+
+class WQA3(Indicator):
+    '''
+    Alpha#3: (-1 * correlation(rank(open), rank(volume), 10))
+
+    这个因子计算的是开盘价的排名和交易量的排名在过去10天内的相关性，并取负值。
+    这是一个利用开盘价和成交量的简单因子。
+    - rank(open) 对开盘价进行排名
+    - rank(volume) 对成交量进行排名
+    - correlation(.., .., 10) 计算两者在过去10日的相关性
+    - 加上-1使信号方向与我们的交易信号一致
+    - 这个因子的思路是,检测开盘价和成交量的排名是否存在相关性,以发现异常的模式。
+
+    从这个简单的因子我们可以看到:
+    - 排名转换能标准化不同量,便于比较
+    - 相关性計算可以检测变量间的相关依赖
+    - 增加一个-1系数控制信号方向
+    这些都是构建因子时常用的技巧。
+    '''
+    lines = ('wqa3',)
+    params = (('period', 10),)
+
+    def __init__(self):
+        self.addminperiod(self.p.period)
+        
+    def next(self):
+        rank_open = stats.rankdata(self.data.open.get(size=self.p.period))
+        rank_volume = stats.rankdata(self.data.volume.get(size=self.p.period))
+        self.lines.wqa3[0] = -1 * np.corrcoef(rank_open, rank_volume)[0, -1]
+
+
+class WQA4(Indicator):
+    '''
+    Alpha#4: (-1 * Ts_Rank(rank(low), 9))
+    这个因子的计算涉及到两个函数：Ts_Rank 和 rank。Ts_Rank 是时间序列排名函数，rank 是普通的排名函数。low 是股票的最低价。
+    这是一个利用最低价的简单因子。
+    - rank(low) 对最低价进行排名
+    - Ts_Rank(.., 9) 计算最近9日的排名时序
+    - 加上-1调整信号方向
+
+    这个因子的思路是:
+    - 检测最低价在最近一段时间内的时序排名
+    - 当最低价排名下降时生成卖出信号
+    它反映了跌势的持续。
+
+    问题：
+    - 当对于一个窗口上最末尾的值时，ts_rank 和 rank 计算出的结果是等价的。因此，该公式中的 ts_rank 似乎并没有独特意义。
+
+    '''
+    lines = ('wqa4',)
+    params = (('period', 9),)
+
+    def __init__(self):
+        self.addminperiod(self.params.period)
+
+    def next(self):
+        values = self.data.low.get(size=self.p.period)
+        ranks = stats.rankdata(values)
+        ts_rank = np.argsort(ranks)[-1]
+        self.lines.alpha4[0] = -1 * ts_rank

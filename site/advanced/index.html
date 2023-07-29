@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Advanced Topics - AutoQuant - QOGIR</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Advanced Topics";
+        var mkdocs_page_input_path = "advanced.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> AutoQuant - QOGIR
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quick_start/">Quick Start</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Advanced Topics</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#market">Market</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#index">Index</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#indicators">Indicators</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#world-quant-alpha-101">World Quant Alpha 101</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#specific-indicators">Specific Indicators</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#backtrader-indicators">Backtrader Indicators</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#metrics">Metrics</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#specific-metrics">Specific Metrics</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ta-lib-metrics">TA-Lib Metrics</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#providers">Providers</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#price-provider">Price Provider</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#provides-list">Provides List</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#api">API</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#financial-statement-provider">Financial Statement Provider</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#provides-list_1">Provides List</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#api_1">API</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#index-provider">Index Provider</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#provides-list_2">Provides List</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#api_2">API</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../contribution/">Contribution</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="" href="https://www.nautidea.com">About</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">AutoQuant - QOGIR</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
+      <li>Advanced Topics</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/Marcnuth/AutoQuant/edit/master/docs/advanced.md">Edit on GitHub ❤ AutoQuant</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="advanced-topics">Advanced Topics</h1>
+<h2 id="market">Market</h2>
+<p>AutoQuant support Shanghai, Shenzhen, HongKong and US markets now.
+Use Market Enum in codes:</p>
+<pre><code class="language-python">from autoquant import Market
+
+Market.SZ
+Market.SH
+Market.HK
+Market.CN
+Market.US
+</code></pre>
+<h2 id="index">Index</h2>
+<p>AutoQuant support the indexes in multiple markets now.</p>
+<p>Use StocksIndex Enum in codes:</p>
+<pre><code class="language-python">from autoquant import StocksIndex
+
+StocksIndex.ZZ500
+StocksIndex.HS300
+StocksIndex.SZ50
+</code></pre>
+<p>Use FundsIndex Enum in codes:</p>
+<pre><code class="language-python">from autoquant import FundsIndex
+
+FundsIndex.CN_ALL
+FundsIndex.CN_ETF
+FundsIndex.CN_QDII
+FundsIndex.HUAXIA_SECTOR_ETF
+</code></pre>
+<h2 id="indicators">Indicators</h2>
+<h3 id="world-quant-alpha-101">World Quant Alpha 101</h3>
+<p>From the paper &lt;101 Formulaic Alphas&gt;: https://arxiv.org/ftp/arxiv/papers/1601/1601.00991.pdf</p>
+<ul>
+<li>WQA1: (rank(Ts_ArgMax(SignedPower(((returns &lt; 0) ? stddev(returns, 20) : close), 2.), 5)) - 0.5)</li>
+<li>WQA2: (-1 * correlation(rank(delta(log(volume), 2)), rank(((close - open) / open)), 6))</li>
+<li>...</li>
+</ul>
+<h3 id="specific-indicators">Specific Indicators</h3>
+<ul>
+<li>ParityIndex</li>
+<li>AdjustedMomentum</li>
+</ul>
+<h3 id="backtrader-indicators">Backtrader Indicators</h3>
+<p>All the indicators in Backtrader are available in AutoQuant.</p>
+<p>For Example, if you were using the indicators of Backtrader like this:</p>
+<pre><code class="language-python">from backtrader.indicators import Momentum
+</code></pre>
+<p>You can simply change the import sentence to use the indicators in AutoQuant. The codes would be:</p>
+<pre><code class="language-python">from autoquant.indicators import Momentum
+</code></pre>
+<h2 id="metrics">Metrics</h2>
+<h3 id="specific-metrics">Specific Metrics</h3>
+<ul>
+<li>Gross Rate Of Return</li>
+<li>CAGR(Compound Annual Growth Rate) </li>
+</ul>
+<h3 id="ta-lib-metrics">TA-Lib Metrics</h3>
+<p>All the metrics in TA-Lib are available in AutoQuant.</p>
+<p>For Example, if you were using the metrics of TA-Lib like this:</p>
+<pre><code class="language-python">from talib import SMA
+
+close = numpy.random.random(100)
+output = MOM(close, timeperiod=5)
+</code></pre>
+<p>You can simply change the import sentence to use the metrics in AutoQuant. The codes would be:</p>
+<pre><code class="language-python">from AutoQuant import SMA
+
+close = numpy.random.random(100)
+output = MOM(close, timeperiod=5)
+</code></pre>
+<h2 id="providers">Providers</h2>
+<h3 id="price-provider">Price Provider</h3>
+<h4 id="provides-list">Provides List</h4>
+<ul>
+<li>BaostockProvider</li>
+<li>TushareProvider</li>
+<li>EastmoneyProvider</li>
+<li>LocalProvider</li>
+</ul>
+<h4 id="api">API</h4>
+<pre><code class="language-python">def daily_prices(self, market: Market, code: str, start: date, end: date, **kwargs)
+
+</code></pre>
+<h3 id="financial-statement-provider">Financial Statement Provider</h3>
+<h4 id="provides-list_1">Provides List</h4>
+<ul>
+<li>SnowballProvider</li>
+</ul>
+<h4 id="api_1">API</h4>
+<pre><code class="language-python">def quarter_statement(self, market: Market, code: str, quarter: date, **kwargs)
+
+def yearly_balance_sheet(self, market: Market, code: str,  years: list, **kwargs)
+
+def yearly_income_sheets(self, market: Market, code: str, years: list, **kwargs)
+
+def yearly_flow_sheets(self, market: Market, code: str, years: list, **kwargs)
+
+</code></pre>
+<h3 id="index-provider">Index Provider</h3>
+<h4 id="provides-list_2">Provides List</h4>
+<ul>
+<li>BaostockProvider</li>
+<li>EastmoneyProvider</li>
+</ul>
+<h4 id="api_2">API</h4>
+<pre><code class="language-python">def stocks_of_index(self, index: StocksIndex, **kwargs)
+
+def funds_of_index(self, index: FundsIndex, **kwargs)
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../quick_start/" class="btn btn-neutral float-left" title="Quick Start"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../contribution/" class="btn btn-neutral float-right" title="Contribution">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../quick_start/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../contribution/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
