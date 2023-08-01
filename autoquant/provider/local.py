@@ -3,31 +3,41 @@ import pandas as pd
 from datetime import date
 import arrow
 from pathlib import Path
+from collections import defaultdict
 
 
 from . import Provider
-from autoquant.mixin.data import PriceMixin
+from autoquant.mixin.data import PriceMixin, IndexMixin
 from autoquant import Market
 from autoquant.log import logger
 
-class LocalProvider(PriceMixin, Provider):
+class LocalProvider(PriceMixin, IndexMixin, Provider):
 
-    def __init__(self, file_rglob: str, dir: Path) -> None:
+    def __init__(self, dir: Path) -> None:
 
-        self.__data = pd.DataFrame()
+        self.__price_data = pd.DataFrame()
+        self.__index_data = pd.DataFrame()
 
-        for f in dir.rglob(file_rglob):
-            if not f.is_file():
-                continue
-
-            assert f.suffix == '.csv', f'File<{f.name}> matches the rglob<{file_rglob}>, but the file format is not CSV. Only CSV file is supported!'
+        def __add_price_data(f):
             df = pd.read_csv(f.as_posix(), converters= {"market": lambda x: Market[x.upper()]})
             df['code'] = df['code'].astype(str)
             df['datetime'] = df['datetime'].astype('datetime64[ns]')
             if df.isnull().any().any():
                 logger.warn(f'File<{f.name}> contains Nan Value!')
 
-            self.__data = pd.concat([self.__data, df])
+            self.__price_data = pd.concat([self.__price_data, df])
+
+        def __add_index_data(f):
+            pass
+
+        handler = {
+            'price': __add_price_data,
+            'index': __add_index_data,
+        }
+        
+        valid_files = (f for f in dir.rglob('*.csv') if f.is_file())
+        for f in valid_files:
+            handler.get(f.name.split('.')[-2], lambda _: None)(f)
 
     @classmethod
     def __format_code(cls, market: Market, code: str):
@@ -41,7 +51,10 @@ class LocalProvider(PriceMixin, Provider):
 
     def daily_prices(self, market: Market, code: str, start: date, end: date, **kwargs):
 
-        df = self.__data.query('code == @code & market == @market & datetime >= @start & datetime <= @end')
+        df = self.__price_data.query('code == @code & market == @market & datetime >= @start & datetime <= @end')
         
         df.index = df['datetime']
         return df
+
+    def all_index(self, market: Market, **kwargs):
+        pass

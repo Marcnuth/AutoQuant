@@ -8,7 +8,9 @@ class Market(Enum):
     SZ = auto()
     HK = auto()
     US = auto()
-    CN = auto()  # 代指中国所有境内市场，沪/深/北
+    CN_MAINLAND = auto()  # 代指中国所有境内市场，沪/深/北
+    CN = auto() # 代指中国所有市场，包含沪港深等
+    GLOBAL = auto() # 代指全球市场
 
 
 class PriceAdjustment(Enum):
@@ -16,6 +18,23 @@ class PriceAdjustment(Enum):
     REVERSE_SPLIT = auto()  # 后复权
     NONE = auto()
 
+
+class Currency(Enum):
+    HKD = auto()
+    RMB = auto()
+    USD = auto()
+    EUR = auto()
+    CHF = auto()
+
+
+class Asset(Enum):
+    EQUILTY = auto()
+    FUND = auto()
+    BOND = auto()
+    FUTURE = auto()
+    MULTI = auto()
+    OTHER = auto()
+    
 
 class StocksIndex(Enum):
     '''股票指数'''

@@ -44,7 +44,7 @@ class EastmoneyProvider(PriceMixin, IndexMixin, Provider):
 
             return df
 
-        assert market == Market.CN, 'only Market.CN is supported in EastmoneyProvider::daily_prices'
+        assert market == Market.CN_MAINLAND, 'only Market.CN is supported in EastmoneyProvider::daily_prices'
         html, pages = __html(code, start, end)
         res_df = pd.DataFrame()
         for page in range(pages):
@@ -114,7 +114,7 @@ class EastmoneyProvider(PriceMixin, IndexMixin, Provider):
 
         all = pd.DataFrame({
             'updated_at': arrow.now().format('YYYY-MM-DD'),
-            'market': Market.CN,
+            'market': Market.CN_MAINLAND,
             'code': df['code'],
             'name': df['name'],
         })

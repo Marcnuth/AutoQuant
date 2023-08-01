@@ -35,6 +35,10 @@ class StatementMixin:
 
 class IndexMixin:
     @abstractmethod
+    def all_index(self, market: Market, **kwargs):
+        pass
+
+    @abstractmethod
     def stocks_of_index(self, index: StocksIndex, **kwargs):
         raise NotImplementedError
 

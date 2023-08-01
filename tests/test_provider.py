@@ -42,10 +42,10 @@ def test_tushare():
 def test_eastmoney():
     collector = Collector().with_price_provider(EastmoneyProvider()).with_index_provider(EastmoneyProvider())
 
-    data = collector.daily_prices(market=Market.CN, code='320007', start=date(2022, 1, 1), end=date(2022, 3, 1))
+    data = collector.daily_prices(market=Market.CN_MAINLAND, code='320007', start=date(2022, 1, 1), end=date(2022, 3, 1))
     assert data.shape == (36, 8)
 
-    data = collector.daily_prices(market=Market.CN, code='007937', start=date(2022, 1, 1), end=date(2022, 3, 1))
+    data = collector.daily_prices(market=Market.CN_MAINLAND, code='007937', start=date(2022, 1, 1), end=date(2022, 3, 1))
     print(data)
 
     data = collector.funds_of_index(index=FundsIndex.CN_ALL)

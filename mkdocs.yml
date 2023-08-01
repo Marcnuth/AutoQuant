@@ -4,7 +4,8 @@ nav:
     - Quick Start: quick_start.md
     - Advanced Topics: advanced.md
     - Contribution: contribution.md
-    - About: https://www.nautidea.com
+    - Specification: specification.md
+    - About: https://autoquant.qogir.fund
 theme: readthedocs
 repo_url: https://github.com/Marcnuth/AutoQuant
 repo_name: GitHub ❤ AutoQuant
